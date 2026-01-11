@@ -9,10 +9,22 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
-    libpq-dev
+    libpq-dev \
+    libzip-dev \
+    libicu-dev
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install \
+    pdo \
+    pdo_mysql \
+    pdo_pgsql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    zip \
+    intl
 
 # Enable Apache rewrite
 RUN a2enmod rewrite
@@ -26,7 +38,7 @@ WORKDIR /var/www/html
 # Copy project files
 COPY . .
 
-# Install dependencies
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
 # Set permissions
